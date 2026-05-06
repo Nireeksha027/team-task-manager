@@ -84,7 +84,7 @@ function CreateTask() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/projects"
+        "https://team-task-manager-production-019b.up.railway.app/api/projects"
       );
 
       setProjects(res.data);
@@ -119,7 +119,7 @@ function CreateTask() {
     try {
 
       const res = await axios.post(
-        "http://localhost:5000/api/tasks/create",
+        "https://team-task-manager-production-019b.up.railway.app/api/tasks/create",
         {
           task_name: taskName,
           assigned_to: assignedTo,
