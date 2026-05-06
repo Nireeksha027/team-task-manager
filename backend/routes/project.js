@@ -20,20 +20,20 @@ router.post("/create", (req, res) => {
     // Validation
     if (
         !project_name ||
-        !description
+        !description ||
+        !created_by
     ) {
 
-        return res
-            .status(400)
-            .json("All fields are required");
+        return res.status(400).json({
+            success: false,
+            message: "All fields are required"
+        });
     }
 
     const sql = `
-    
-    INSERT INTO projects
-    (project_name,description,created_by)
-
-    VALUES (?,?,?)
+        INSERT INTO projects
+        (project_name, description, created_by)
+        VALUES (?, ?, ?)
     `;
 
     db.query(
@@ -47,12 +47,18 @@ router.post("/create", (req, res) => {
 
             if (err) {
 
-                return res
-                    .status(500)
-                    .json(err);
+                console.log(err);
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Project creation failed"
+                });
             }
 
-            res.json("Project Created");
+            res.json({
+                success: true,
+                message: "Project Created"
+            });
         }
     );
 });
@@ -64,16 +70,21 @@ router.post("/create", (req, res) => {
 
 router.get("/", (req, res) => {
 
-    const sql =
-      "SELECT * FROM projects";
+    const sql = `
+        SELECT * FROM projects
+        ORDER BY id DESC
+    `;
 
     db.query(sql, (err, result) => {
 
         if (err) {
 
-            return res
-                .status(500)
-                .json(err);
+            console.log(err);
+
+            return res.status(500).json({
+                success: false,
+                message: "Failed to fetch projects"
+            });
         }
 
         res.json(result);
@@ -89,10 +100,10 @@ router.delete("/delete/:id", (req, res) => {
 
     const projectId = req.params.id;
 
-    // Delete linked tasks first
+    // Delete tasks first
 
     const deleteTasks =
-      "DELETE FROM tasks WHERE project_id=?";
+        "DELETE FROM tasks WHERE project_id=?";
 
     db.query(
         deleteTasks,
@@ -101,15 +112,18 @@ router.delete("/delete/:id", (req, res) => {
 
             if (err) {
 
-                return res
-                    .status(500)
-                    .json(err);
+                console.log(err);
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed to delete tasks"
+                });
             }
 
-            // Then delete project
+            // Delete project
 
             const deleteProject =
-              "DELETE FROM projects WHERE id=?";
+                "DELETE FROM projects WHERE id=?";
 
             db.query(
                 deleteProject,
@@ -118,19 +132,22 @@ router.delete("/delete/:id", (req, res) => {
 
                     if (err) {
 
-                        return res
-                            .status(500)
-                            .json(err);
+                        console.log(err);
+
+                        return res.status(500).json({
+                            success: false,
+                            message: "Failed to delete project"
+                        });
                     }
 
-                    res.json(
-                      "Project Deleted"
-                    );
+                    res.json({
+                        success: true,
+                        message: "Project Deleted"
+                    });
                 }
             );
         }
     );
 });
-
 
 module.exports = router;

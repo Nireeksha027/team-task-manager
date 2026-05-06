@@ -55,7 +55,7 @@ function Dashboard() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/tasks"
+        "https://team-task-manager-production-019b.up.railway.app/api/tasks"
       );
 
       setTasks(res.data);
@@ -74,7 +74,7 @@ function Dashboard() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/projects"
+        "https://team-task-manager-production-019b.up.railway.app/api/projects"
       );
 
       setProjects(res.data);
@@ -98,7 +98,7 @@ function Dashboard() {
     try {
 
       await axios.put(
-        `http://localhost:5000/api/tasks/update/${id}`,
+        `https://team-task-manager-production-019b.up.railway.app/api/tasks/update/${id}`,
         {
           status
         }
@@ -132,7 +132,7 @@ function Dashboard() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/api/tasks/delete/${id}`
+        `https://team-task-manager-production-019b.up.railway.app/api/tasks/delete/${id}`
       );
 
       fetchTasks();
