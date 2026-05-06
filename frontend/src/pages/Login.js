@@ -15,7 +15,6 @@ function Login() {
     if (!email || !password) {
 
       alert("All fields are required");
-
       return;
     }
 
@@ -29,16 +28,26 @@ function Login() {
         }
       );
 
-      alert(res.data.message);
+      console.log(res.data);
 
-      // Save user in localStorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify(res.data.user)
-      );
+      // Check login success
+      if (res.data.user) {
 
-      // Redirect
-      navigate("/dashboard");
+        alert("Login successful");
+
+        // Save user in localStorage
+        localStorage.setItem(
+          "user",
+          JSON.stringify(res.data.user)
+        );
+
+        // Redirect
+        navigate("/dashboard");
+
+      } else {
+
+        alert("Invalid email or password");
+      }
 
     } catch (err) {
 
